@@ -1,0 +1,55 @@
+#Office Catalogue
+
+from tkinter import *
+import os
+from datetime import datetime
+
+root = Tk()
+
+def ClickDone():
+    inp=e_name.get()
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    f=open("Names.txt", "a")
+    Label_Disp["text"]="Hello, "+e_name.get()+" !"
+    f.write("\n")
+    if inp in open("Names.txt").read():
+        Label_Disp["text"]="Already in Office!"
+        e_name.delete(0, END)
+    else:
+        f.write(inp+" - "+str(current_time))
+        f.close()
+        e_name.delete(0, END)
+
+def ClickList():
+    f=open("Names.txt", "r")
+    Label_Disp["text"]="Present:\n"+str(f.read())
+    
+def ClickClr():
+    os.remove("Names.txt")
+    e_name.delete(0, END)
+    Label_Disp["text"]=""
+
+Label_1 =  Label(root, text = "Welcome!")
+Label_1.grid(row=0, column=0, ipadx=10, ipady=0)
+
+Label_Disp =  Label(root, text = "")
+Label_Disp.grid(row=1, column=0, columnspan=3, ipadx=10, ipady=0)
+
+Label_Name =  Label(root, text = "Name: ")
+Label_Name.grid(row=2, column=0, ipadx=10, ipady=10)
+
+e_name=Entry(root, width=50)
+e_name.grid(row=2, column=1, padx=10, pady=10)
+e_name.insert(0, "")
+
+Button_Done=Button(root, text="Done!", command=ClickDone, width=10)
+Button_Done.grid(row=3, column=0)
+
+Button_List=Button(root, text="Display List", command=ClickList, width=10)
+Button_List.grid(row=3, column=1)
+
+Button_Clr=Button(root, text="Delete File", command=ClickClr, width=10)
+Button_Clr.grid(row=3, column=2)
+
+root.mainloop()
